@@ -8,7 +8,7 @@ import os
 
 # Load environment variables (for your API token) from the .env file
 load_dotenv()
-# Retrieve the API token. The 'X-App-Token' header requires a non-empty value.
+# Retrieve the API token. The 'X-App-Token', creates the header
 myappsec = os.getenv('MY_APP_SEC')
 headers = {'X-App-Token': myappsec} if myappsec else {} # Include token if available
 
