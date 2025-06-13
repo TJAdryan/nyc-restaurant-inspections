@@ -1,0 +1,76 @@
+NYC Restaurant Inspections Data Pull
+This project provides a Python script to pull NYC restaurant inspection data from the NYC Open Data portal. It retrieves inspection records for restaurants in New York City, focusing on a specific date range, and saves the data in both CSV and Parquet formats for easy analysis.
+Recently I wrote about using DuckDB to store and query NYC restaurant inspection data. I wanted to give the api so the data could be retrieved programmatically, but I felt like the post was already long. So I decided to offer this as a separate post.
+
+
+Getting Started
+Follow these steps to set up and run the data pull script.
+
+Prerequisites
+Before you begin, ensure you have the following installed:
+
+Python 3.x
+
+pip (Python package installer)
+
+Installation
+Clone the repository (or download the files directly):
+
+git clone https://github.com/TJAdryan/nyc-restaurant-inspections.git
+cd nyc-restaurant-inspections
+
+
+
+Install the required Python libraries:
+
+pip install -r requirements.txt
+
+Setting up Your Environment (and Securing Your Token!)
+It's good practice to keep your API tokens out of your main code files and never commit them to version control. This project uses environment variables for secure token management.
+
+Get an NYC Open Data App Token:
+While many NYC Open Data endpoints can be accessed without a token for basic queries, having one provides higher rate limits and ensures consistent access. You can get one for free by signing up on the NYC Open Data portal.
+
+Create a .env file:
+In the root directory of your cloned repository, create a file named .env. This file will store your API token. You can use the provided .env.example as a template.
+
+Add your app token to .env:
+Open the .env file and add your token like so:
+
+MY_APP_SEC="YOUR_APP_TOKEN_GOES_HERE"
+
+Replace "YOUR_APP_SEC_GOES_HERE" with the actual token you obtained.
+
+Running the Script
+Once you have installed the dependencies and set up your .env file, you can run the data pull script:
+
+python pull_data.py
+
+The script will print progress messages to your console, and once complete, it will save the retrieved restaurant inspection data as CSV and Parquet files in the same directory.
+
+Code Overview
+The pull_data.py script performs the following key actions:
+
+Configuration: Sets up the NYC Open Data endpoint for restaurant inspections and defines the date range.
+
+Date Range Calculation: Dynamically calculates a date range that ends exactly 30 days before the current date and extends 90 days prior to that.
+
+API Interaction: Makes HTTP requests to the Socrata API, including proper headers for your app token and $where clauses for date filtering.
+
+Pagination: Handles retrieving large datasets by iterating through results using $offset parameters until all available data within the specified date range is fetched.
+
+Data Processing: Converts the JSON response into a pandas DataFrame and formats the inspection_date column.
+
+Saving Data: Exports the cleaned data to CSV and Parquet formats for easy analysis.
+
+Exploring the Data
+Once you have the data in a pandas DataFrame (and saved to CSV/Parquet), you can explore it using various tools. You might:
+
+Filter by grade: Find restaurants with A, B, or C grades.
+
+Analyze violation_description: See the most common violations.
+
+Group by cuisine_description: Compare inspection scores across different cuisines.
+
+Map locations: Use the building, street, zipcode, and boro information to visualize restaurant locations and their inspection outcomes.
+
